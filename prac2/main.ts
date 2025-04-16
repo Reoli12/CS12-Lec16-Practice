@@ -1,5 +1,6 @@
 import { Array } from 'effect'
 
+
 function main() {
 
     const root = document.querySelector('#root')! // root explicitly defined in html file
@@ -17,13 +18,30 @@ function main() {
 }
 
 async function addNewCounter(root: Element) {
-    const countText = document.createElement('p')
+
+    async function incrementCounter() {
+        while (true) {
+            console.log(' i ran ')
+            await sleep(1000) // yield control to main for 1000ms
+            if (isCounting) {
+                counter++
+                counterText.textContent = `${counter}`
+                console.log(counter)
+            }
+        }
+        
+    }
+
+
+    const counterText = document.createElement('p')
     let counter: number = 0
-    countText.textContent = `${counter}`
+    counterText.textContent = `${counter}`
 
     // initialize
     const startButton = document.createElement('button')
     startButton.textContent = 'Start'
+    const stopButton = document.createElement('button')
+    stopButton.textContent = 'Stop'
     const resetButton = document.createElement('button')
     resetButton.textContent = 'Reset'
     const deleteButton = document.createElement('button')
@@ -34,14 +52,22 @@ async function addNewCounter(root: Element) {
 
     startButton.addEventListener('click', () => {
         isCounting = true
-        // increment by one every one second
-        
+        node.removeChild(startButton)
+        node.appendChild(stopButton)
+        node.insertBefore(stopButton, resetButton)
+    })
+
+    stopButton.addEventListener('click', () => {
+        isCounting = false
+        node.removeChild(stopButton)
+        node.appendChild(startButton)
+        node.insertBefore(startButton, resetButton)
     })
 
     resetButton.addEventListener('click', () => {
         isCounting = false
         counter = 0
-        countText.textContent = `${counter}`
+        counterText.textContent = `${counter}`
     })
 
     deleteButton.addEventListener('click', () => {
@@ -51,13 +77,19 @@ async function addNewCounter(root: Element) {
     // append to node
 
     const node = document.createElement('div')
-    const children = Array.make(countText, startButton, resetButton, deleteButton)
+    const children = Array.make(counterText, startButton, resetButton, deleteButton)
 
     for (const element of children) {
         node.appendChild(element)
     }
 
     root.appendChild(node)
+
+    incrementCounter()
+    
 }
+
+// from lecture
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 main()
