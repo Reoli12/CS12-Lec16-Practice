@@ -47,8 +47,11 @@ async function main() {
         n = getRandomInt(100, 10000)
         nNode.textContent = `n is ${n}`
 
-        previousNumsChosenList = ''
+        previousNumsChosenList = ' '
         prevListNode.textContent = previousNumsChosenList
+
+        currentTurn = 0
+        turnNode.textContent = `Player ${currentTurn + 1}'s turn`
         root.removeChild(resetButton)
     })
 
