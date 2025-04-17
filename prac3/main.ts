@@ -22,32 +22,54 @@ async function main() {
     nNode.textContent = `n is ${n}`
     prevListNode.textContent = previousNumsChosenList
 
+    const functionalButtonsNode = document.createElement('div') // where working number buttons depend
+    const displayButtonsNode = document.createElement('div') // children are buttons that dont work
+
     for (const child of Array.make(turnNode, kNode, nNode, prevListNode)) {
         root.appendChild(child)
     }
 
-    // making buttons
+    // making nonfunctional buttons
     for (const num of numChoices) {
-        const numButton = document.createElement('button')
-        numButton.textContent = `  ${num}  `
-        numButton.addEventListener('click', () => 
+        const nonFunctionalNumButton = document.createElement('button')
+        nonFunctionalNumButton.textContent = `  ${num}  ` // not eventListener
+        displayButtonsNode.appendChild(nonFunctionalNumButton)
+    }
+
+    // making functional buttons
+    for (const num of numChoices) {
+        const functionalNumButton = document.createElement('button')
+
+        functionalNumButton.textContent = `  ${num}  `
+        functionalNumButton.addEventListener('click', async () => 
             {
                 k *= num
                 kNode.textContent = `k is currently ${k}`
                 currentTurn = (currentTurn + 1) % 2
-                // currentTurn++ // to account for mod
-                // console.log(currentTurn)
                 turnNode.textContent = turnNode.textContent = `Player ${currentTurn + 1}'s turn`
                 previousNumsChosenList = String.concat(previousNumsChosenList, ` ${num}`)
                 prevListNode.textContent = previousNumsChosenList
+                // replace buttons with identical-looking buttons but with different eventListeners
+                root.removeChild(functionalButtonsNode)
+                root.appendChild(displayButtonsNode)
+                
+                await delay(5000)
+                // bring back buttons
+                root.removeChild(displayButtonsNode)
+                root.appendChild(functionalButtonsNode)
+
+                
             }
         )
-        root.appendChild(numButton)
+        functionalButtonsNode.appendChild(functionalNumButton)
+        root.appendChild(functionalButtonsNode)
     }
 }
 
 function getRandomInt(min: number, max: number) {
     return Math.floor(Math.random()*(max - min) + min)
 }
+
+const delay = (ms: number) => new Promise((resolve) =>  setTimeout(resolve, ms))
 
 main()
