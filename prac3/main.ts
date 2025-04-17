@@ -5,7 +5,7 @@ async function main() {
     const root = document.querySelector('#root')!
 
     let k = 1
-    const n: number = getRandomInt(100, 10000)
+    let n: number = getRandomInt(100, 10000)
     let currentTurn: number = 0
     let previousNumsChosenList = ''
 
@@ -28,6 +28,25 @@ async function main() {
     for (const child of Array.make(turnNode, kNode, nNode, prevListNode)) {
         root.appendChild(child)
     }
+
+    // making reset button
+    
+    const resetButton = document.createElement('button')
+    resetButton.textContent = 'Reset'
+
+    resetButton.addEventListener('click', () => {
+
+        root.removeChild(displayButtonsNode)
+        root.appendChild(functionalButtonsNode)
+
+        k = 1
+        kNode.textContent = `k is currently ${k}`
+        n = getRandomInt(100, 10000)
+
+        previousNumsChosenList = ''
+        prevListNode.textContent = previousNumsChosenList
+        root.removeChild(resetButton)
+    })
 
     // making nonfunctional buttons
     for (const num of numChoices) {
@@ -53,12 +72,19 @@ async function main() {
                 root.removeChild(functionalButtonsNode)
                 root.appendChild(displayButtonsNode)
                 
-                await delay(5000)
+                await delay(500)
                 // bring back buttons
                 root.removeChild(displayButtonsNode)
                 root.appendChild(functionalButtonsNode)
 
-                
+                if (k >= n) {
+                    root.removeChild(functionalButtonsNode)
+                    root.appendChild(displayButtonsNode)
+
+                    root.appendChild(resetButton)
+
+                }
+
             }
         )
         functionalButtonsNode.appendChild(functionalNumButton)
