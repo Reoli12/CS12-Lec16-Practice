@@ -6,7 +6,7 @@ async function main() {
 
     let k = 1
     const n: number = getRandomInt(100, 10000)
-    let current_turn: number = 1
+    let currentTurn: number = 0
     let previousNumsChosenList = ''
 
     const numChoices = Array.range(2, 9)
@@ -17,7 +17,7 @@ async function main() {
     const nNode = document.createElement('p')
     const prevListNode = document.createElement('p')
 
-    turnNode.textContent = `Player ${current_turn}'s turn`
+    turnNode.textContent = `Player ${currentTurn + 1}'s turn`
     kNode.textContent = `k is currently ${k}`
     nNode.textContent = `n is ${n}`
     prevListNode.textContent = previousNumsChosenList
@@ -33,7 +33,13 @@ async function main() {
         numButton.addEventListener('click', () => 
             {
                 k *= num
+                kNode.textContent = `k is currently ${k}`
+                currentTurn = (currentTurn + 1) % 2
+                // currentTurn++ // to account for mod
+                // console.log(currentTurn)
+                turnNode.textContent = turnNode.textContent = `Player ${currentTurn + 1}'s turn`
                 previousNumsChosenList = String.concat(previousNumsChosenList, ` ${num}`)
+                prevListNode.textContent = previousNumsChosenList
             }
         )
         root.appendChild(numButton)
