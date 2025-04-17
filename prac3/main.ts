@@ -22,6 +22,8 @@ async function main() {
     nNode.textContent = `n is ${n}`
     prevListNode.textContent = previousNumsChosenList
 
+    const winnerNode = document.createElement('p')
+
     const functionalButtonsNode = document.createElement('div') // where working number buttons depend
     const displayButtonsNode = document.createElement('div') // children are buttons that dont work
 
@@ -36,12 +38,14 @@ async function main() {
 
     resetButton.addEventListener('click', () => {
 
+        root.removeChild(winnerNode)
         root.removeChild(displayButtonsNode)
         root.appendChild(functionalButtonsNode)
 
         k = 1
         kNode.textContent = `k is currently ${k}`
         n = getRandomInt(100, 10000)
+        nNode.textContent = `n is ${n}`
 
         previousNumsChosenList = ''
         prevListNode.textContent = previousNumsChosenList
@@ -78,9 +82,11 @@ async function main() {
                 root.appendChild(functionalButtonsNode)
 
                 if (k >= n) {
+                    winnerNode.textContent = `Player ${currentTurn + 1} wins! `
+
                     root.removeChild(functionalButtonsNode)
                     root.appendChild(displayButtonsNode)
-
+                    root.appendChild(winnerNode)
                     root.appendChild(resetButton)
 
                 }
