@@ -72,7 +72,7 @@ async function main() {
                 k *= num
                 kNode.textContent = `k is currently ${k}`
                 currentTurn = (currentTurn + 1) % 2
-                turnNode.textContent = turnNode.textContent = `Player ${currentTurn + 1}'s turn`
+                turnNode.textContent =  `Player ${currentTurn + 1}'s turn`
                 previousNumsChosenList = String.concat(previousNumsChosenList, ` ${num}`)
                 prevListNode.textContent = previousNumsChosenList
                 // replace buttons with identical-looking buttons but with different eventListeners
